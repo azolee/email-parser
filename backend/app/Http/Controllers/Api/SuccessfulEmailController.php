@@ -15,6 +15,7 @@ class SuccessfulEmailController extends Controller
      */
     public function index()
     {
+        // @todo Add filtering, sorting and extract pagination count to be customizable from config
         return response()->json(SuccessfulEmail::whereNull('deleted_at')->paginate(10));
     }
 

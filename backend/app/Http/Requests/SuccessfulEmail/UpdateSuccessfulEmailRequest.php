@@ -22,7 +22,18 @@ class UpdateSuccessfulEmailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'sometimes|string',
+            'affiliate_id' => ['sometimes', 'integer'],
+            'envelope' => ['sometimes', 'string'],
+            'from' => ['sometimes', 'string'],
+            'subject' => ['sometimes', 'string'],
+            'dkim' => ['nullable', 'string'],
+            'SPF' => ['nullable', 'string'],
+            'spam_score' => ['nullable', 'numeric'],
+            'email' => ['sometimes', 'string'],
+            'raw_text' => ['nullable', 'string'],
+            'sender_ip' => ['nullable', 'string', 'max:50'],
+            'to' => ['sometimes', 'string'],
+            'timestamp' => ['sometimes', 'integer'],
         ];
     }
 }

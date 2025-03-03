@@ -11,7 +11,7 @@ class SuccessfulEmail extends Model
 {
     use SoftDeletes, HasFactory;
 
-    protected $fillable = ['email', 'raw_text'];
+    protected $guarded = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * Create a new factory instance for the model.
