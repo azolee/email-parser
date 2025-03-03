@@ -1,0 +1,1 @@
+For more information about the backend, please refer to the [backend folder](backend/Readme.md).
