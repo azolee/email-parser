@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Models\SuccessfulEmail;
 use DOMDocument;
+use eXorus\PhpMimeMailParser\Parser;
+
+;
 
 class EmailParserService
 {
@@ -44,20 +47,13 @@ class EmailParserService
         return $email->update(['raw_text' => $plainText]);
     }
 
-    private function extractPlainText(string $html): string
+    private function extractPlainText(string $rawEmailData): string
     {
-        $dom = new DOMDocument();
-        @$dom->loadHTML($html);
+        $parser = new Parser();
+        $parser->setText($rawEmailData);
 
-        while ($style = $dom->getElementsByTagName('style')->item(0)) {
-            $style->parentNode->removeChild($style);
-        }
-
-        $xpath = new \DOMXPath($dom);
-        foreach ($xpath->query('//*[@style]') as $node) {
-            $node->removeAttribute('style');
-        }
-
-        return trim($dom->textContent);
+        return strip_tags(
+            trim($parser->getMessageBody('text'))
+        );
     }
 }
