@@ -33,7 +33,7 @@ class StoreSuccessfulEmailRequest extends FormRequest
             'raw_text' => ['nullable', 'string'],
             'sender_ip' => ['nullable', 'string', 'max:50'],
             'to' => ['required', 'string'],
-            'timestamp' => ['required', 'integer'],
+            'timestamp' => ['nullable', 'integer'],
         ];
     }
 }

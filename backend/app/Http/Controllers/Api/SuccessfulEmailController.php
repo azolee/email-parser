@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SuccessfulEmail\StoreSuccessfulEmailRequest;
 use App\Http\Requests\SuccessfulEmail\UpdateSuccessfulEmailRequest;
+use App\Http\Resources\SuccessfulEmailResource;
 use App\Models\SuccessfulEmail;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class SuccessfulEmailController extends Controller
     public function index()
     {
         // @todo Add filtering, sorting and extract pagination count to be customizable from config
-        return response()->json(SuccessfulEmail::whereNull('deleted_at')->paginate(10));
+        return SuccessfulEmailResource::collection(SuccessfulEmail::whereNull('deleted_at')->paginate(10));
     }
 
     /**
@@ -24,8 +25,10 @@ class SuccessfulEmailController extends Controller
      */
     public function store(StoreSuccessfulEmailRequest $request)
     {
-        $email = SuccessfulEmail::create($request->validated());
-        return response()->json($email, 201);
+        $validatedData = $request->validated();
+        $validatedData['timestamp'] = $validatedData['timestamp'] ?? time();
+        $email = SuccessfulEmail::create($validatedData);
+        return new SuccessfulEmailResource($email);
     }
 
     /**
@@ -33,7 +36,7 @@ class SuccessfulEmailController extends Controller
      */
     public function show(SuccessfulEmail $email)
     {
-        return response()->json($email);
+        return new SuccessfulEmailResource($email);
     }
 
     /**
@@ -42,7 +45,7 @@ class SuccessfulEmailController extends Controller
     public function update(UpdateSuccessfulEmailRequest $request, SuccessfulEmail $email)
     {
         $email->update($request->validated());
-        return response()->json($email);
+        return new SuccessfulEmailResource($email);
     }
 
     /**
